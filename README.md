@@ -47,4 +47,14 @@ When we convert an image to ASCII 1:1, the output looks a bit vertically stretch
 ```
 
 ## External libraries
-[SFML 3.0.0](https://www.sfml-dev.org/) is used to open image files and get pixel colors. Built using **CMake**.
+[SFML 3.0.0](https://www.sfml-dev.org/) is used to open image files and get pixel colors.
+
+## Build
+I built it on **Linux** using **CMake** 3.31.6.
+You can do the same by running:
+```bash
+cmake .
+make
+```
+in the project folder.<br>
+However, if you build on Windows, **you may face some problems** with SFML dependencies.

@@ -27,6 +27,12 @@ int main(int argc, const char* argv[])
     const int   GRAD     = std::atoi(argv[3]);
     const char  MODE  = argv[4][0];
 
+    if(GRAD < 2)
+    {
+        std::cout << "Gradient length can't be less than 2!";
+        return -3;
+    }
+
     sf::Image img_in;
     if(!img_in.loadFromFile(FILE_IN))
     {

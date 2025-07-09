@@ -19,16 +19,16 @@ int getBrightness(sf::Color pixel)
 
 char pixelsToASCII(std::initializer_list<sf::Color> pixels, std::string &gradient, char c_mode)
 {
-    int bright = 0;
+    float bright = 0;
     for(const auto& pixel : pixels)
         bright += getBrightness(pixel);
     bright /= pixels.size();
 
-    int step = 256 / gradient.length();
+    float step = 255 / (gradient.length() - 1);
     int index = bright / step;
 
     if(c_mode == 'd')
-        index = gradient.length() - index;
+        index = gradient.length() - index - 1;
     
     return gradient[index];
 }
