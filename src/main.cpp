@@ -8,7 +8,7 @@ using char_vector = std::vector< std::vector<char> >;
 
 int main(int argc, const char* argv[])
 {
-    // file_from, mode, gradient, file_to
+    // file_from, color mode, gradient length, mode, file_to
     // mode d - dark and l - light
 
     if(argc < 5)
@@ -22,10 +22,11 @@ int main(int argc, const char* argv[])
         return -1;
     }
 
-    const char* FILE_IN  = argv[1];
+    const char* FILE_IN        = argv[1];
     const char  COLOR_MODE     = argv[2][0];
-    const int   GRAD     = std::atoi(argv[3]);
-    const char  MODE  = argv[4][0];
+    const int   GRAD           = std::atoi(argv[3]);
+    const char  MODE           = argv[4][0];
+    const std::string GRADIENT = " .:-=+*#%@";
 
     if(GRAD < 2)
     {
@@ -40,28 +41,27 @@ int main(int argc, const char* argv[])
         return -2;
     }
 
-    std::string gradient = " .:-=+*#%@";
-    char_vector out = imgToAscii(img_in, gradient, GRAD, MODE, MODE);
+    char_vector out = imgToAscii(img_in, GRADIENT, GRAD, MODE, MODE);
 
     if(argc == 6)
     {
         const char* FILE_OUT = argv[5]; 
         std::ofstream fout(FILE_OUT);
 
-        for(int i = 0; i < out.size(); i++)
+        for(auto row : out)
         {
-            for(int j = 0; j < out[0].size(); j++)
-                fout << out[i][j];
+            for(char c : row)
+                fout << c;
             fout << '\n';
         }
         fout.close();
     }
     else
     {
-        for(int i = 0; i < out.size(); i++)
+        for(auto row : out)
         {
-            for(int j = 0; j < out[0].size(); j++)
-                std::cout << out[i][j];
+            for(char c : row)
+                std::cout << c;
             std::cout << '\n';
         }
     }

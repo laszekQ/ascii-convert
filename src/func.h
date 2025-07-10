@@ -7,7 +7,9 @@
 
 using char_vector = std::vector< std::vector<char> >;
 
-int getBrightness(sf::Color pixel)
+const int COLOR_RANGE = 255;
+
+int getBrightness(const sf::Color &pixel)
 {
     int r = pixel.r;
     int g = pixel.g;
@@ -17,23 +19,26 @@ int getBrightness(sf::Color pixel)
     return bright;
 }
 
-char pixelsToASCII(std::initializer_list<sf::Color> pixels, std::string &gradient, char c_mode)
+char pixelsToASCII(std::initializer_list<sf::Color> pixels, 
+                   const std::string &gradient, const char c_mode)
 {
     float bright = 0;
     for(const auto& pixel : pixels)
         bright += getBrightness(pixel);
     bright /= pixels.size();
 
-    float step = 255 / (gradient.length() - 1);
+    float step = COLOR_RANGE / (gradient.length() - 1);
     int index = bright / step;
 
+    // reverse the index depending on color mode
     if(c_mode == 'd')
         index = gradient.length() - index - 1;
     
     return gradient[index];
 }
 
-char_vector imgToAscii(sf::Image &img, std::string gradient, int grad_n, char c_mode, char mode)
+char_vector imgToAscii(const sf::Image &img, std::string gradient,
+                       const int grad_len, const char c_mode, const char mode)
 {
     const uint32_t WIDTH  = img.getSize().x;
     const uint32_t HEIGHT = img.getSize().y;
@@ -41,8 +46,10 @@ char_vector imgToAscii(sf::Image &img, std::string gradient, int grad_n, char c_
     uint32_t width = WIDTH * (1 + (mode == '3'));
     char_vector out(height, std::vector<char>(width));
 
-    gradient = gradient.substr(0, grad_n);
+    gradient = gradient.substr(0, grad_len);
 
+    // in 2:1 (mode = 2) we need to convert 2 pixels into 1 char,
+    // therefore, the iterator must be incremented by 2 instead 1
     int step_y = 1 + (mode == '2');
 
     for(uint32_t i = 0; i <= HEIGHT - step_y; i += step_y)
@@ -50,7 +57,7 @@ char_vector imgToAscii(sf::Image &img, std::string gradient, int grad_n, char c_
         int x = 0;
         for(uint32_t j = 0; j < WIDTH; j++)
         {
-            char c = 0;
+            char c = ' ';
             int y = i;
             switch(mode)
             {
