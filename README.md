@@ -7,7 +7,7 @@ When we convert an image to ASCII 1:1, the output looks a bit vertically stretch
 
 ## Usage
 ```bash
-./ascii-convert [INPUT FILE] [COLOR MODE] [GRADIENT LENGTH] [MODE] [OUTPUT FILE]
+./ascii-convert [INPUT FILE] [COLOR MODE] [GRADIENT LENGTH] [MODE] [OUTPUT FILE] [FONT] [FONT SIZE]
 ```
 `COLOR MODE` - either `l`(light) or `d`(dark)
 
@@ -17,7 +17,10 @@ When we convert an image to ASCII 1:1, the output looks a bit vertically stretch
 
 `OUTPUT FILE` - not specifying will result in output to console
 
-### Demonstration (light color mode, 9 length, 2:1)
+If you wish to generate the output as an image, add one of the following to the end of the FILE_OUT: (.bmp, .png, .tga, .jpg)<br>
+This also requires a `FONT` file provided, you can look up supported font files in the [SFML documentation](https://www.sfml-dev.org/documentation/3.0.1/classsf_1_1Font.html)
+
+### Demonstration "Eye" (light color mode, 9 length, 2:1)
 ```
 #*=. :=:.-+***##*-.:++-:=###################*-  :*###############*==***+--+*=:--
 *+-. ...-*######+:.--:-+*###################+. :*#################*==***+--+*+-:
@@ -51,10 +54,10 @@ When we convert an image to ASCII 1:1, the output looks a bit vertically stretch
 
 ## Build
 I built it on **Linux** using **CMake** 3.31.6.
-You can do the same by running:
+You can do the same by simply running:
 ```bash
 cmake .
 make
 ```
-in the project folder.<br>
+in the project folder. This will download SFML 3.0.0 from the official repository.<br>
 However, if you build on Windows, **you may face some problems** with SFML dependencies.

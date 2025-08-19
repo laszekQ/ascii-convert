@@ -14,11 +14,13 @@ int main(int argc, const char* argv[])
     if(argc < 5)
     {
         std::cout << "Not enough arguments!\n";
-        std::cout << "Usage:\n./ascii-convert [FILE_IN] [COLOR MODE] [GRADIENT LENGTH] [MODE] [FILE_OUT]\n";
-        std::cout << "COLOR MODE: d - dark, l - light\n"; 
-        std::cout << "GRADIENT LENGTH: from 3 to 10, the higher the value the more details there will be\n";
-        std::cout << "MODE - 1 - 1:1, 2 - 2:1, 3 - 1:2\n";
-        std::cout << "FILE_OUT - can be empty, which would redirect the output to the console" << std::endl;
+        std::cout << "Usage:\n./ascii-convert [FILE_IN] [COLOR MODE] [GRADIENT LENGTH] [MODE] [FILE_OUT] [FONT]\n";
+        std::cout << "[COLOR MODE]: d - dark, l - light\n"; 
+        std::cout << "[GRADIENT LENGTH]: from 3 to 10, the higher the value the more details there will be\n";
+        std::cout << "[MODE] - 1 - 1:1, 2 - 2:1, 3 - 1:2\n";
+        std::cout << "[FILE_OUT] - can be empty, which would redirect the output to the console\n";
+        std::cout << "If you wish to generate the output as an image, add one of the following to the end of the FILE_OUT: (.bmp, .png, .tga, .jpg)\n";
+        std::cout << "This also requires a [FONT] file provided, you can look up supported font files in the SFML documentation" << std::endl;
         return -1;
     }
 
@@ -43,18 +45,38 @@ int main(int argc, const char* argv[])
 
     char_vector out = imgToAscii(img_in, GRADIENT, GRAD, MODE, MODE);
 
-    if(argc == 6)
+    if(argc > 5)
     {
         const char* FILE_OUT = argv[5]; 
-        std::ofstream fout(FILE_OUT);
 
-        for(auto row : out)
+        if(checkIfImage(FILE_OUT))
         {
-            for(char c : row)
-                fout << c;
-            fout << '\n';
+            if(argc < 7)
+            {
+                std::cout << "You must provide a font file as the last argument!" << std::endl;
+                return -4;
+            }
+            const char* FONT = argv[6];
+            int f_size = 4;
+
+            if(argc == 8)
+                f_size = std::atoi(argv[7]);
+
+            sf::Image img_out = asciiToImg(out, COLOR_MODE, FONT, f_size);
+            if(!img_out.saveToFile(FILE_OUT))
+                std::cout << "Failed to save the image!" << std::endl;
         }
-        fout.close();
+        else
+        {
+            std::ofstream fout(FILE_OUT);
+            for(auto row : out)
+            {
+                for(char c : row)
+                    fout << c;
+                fout << '\n';
+            }
+            fout.close();
+        }
     }
     else
     {
