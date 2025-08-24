@@ -47,7 +47,7 @@ int main(int argc, const char* argv[])
 
     if(argc > 5)
     {
-        const char* FILE_OUT = argv[5]; 
+        const char* FILE_OUT = argv[5];
 
         if(checkIfImage(FILE_OUT))
         {

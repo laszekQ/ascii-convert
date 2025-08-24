@@ -107,8 +107,9 @@ bool checkIfImage(const char* filename)
 
 sf::Image asciiToImg(const char_vector &chars, const char C_MODE, const char* FONT, const int F_SIZE)
 {
-    const uint32_t WIDTH = chars[0].size() * F_SIZE;
+    const uint32_t WIDTH = chars[0].size() * F_SIZE / 2;
     const uint32_t HEIGHT = chars.size() * F_SIZE;
+    
 
     const sf::Font font(FONT);
 
